@@ -2,7 +2,7 @@
 <aura:component implements="force:appHostable,flexipage:availableForAllPageTypes" access="global" controller="SF1_ListContractsController">
     <!--aura:component controller="ListContractsController"-->
     <!--aura:attribute name="contract" type="Merge_Contract_Header__c"/-->
-    <aura:attribute name="acc" type="String"/>    
+    <aura:attribute name="acc" type="String"/>  
     <aura:attribute name="selectedContracts" type="String[]" />  
     <aura:attribute name="contracts" type="Merge_Contract_Header__c[]"/>
     <aura:attribute name="contractsMap" type="Map"/>
@@ -10,6 +10,24 @@
     <aura:attribute name="doneLoading" type="Boolean" default="false" />
     <aura:attribute name="isContractCurrencyMismatch" type="Boolean" default="false" />
     <aura:attribute name="noContractsFound" type="Boolean" default="false" />
+
+    <!-- new variables for 17_8 -->
+        <aura:attribute name="acct" type="Account"/>
+        <!-- MOB-158 changes for sorting...--> 
+        <aura:attribute name="resultsetsize" type="Integer" default="0"/>
+        <aura:attribute name="results" type="Object[]"/>
+        <aura:attribute name="pagelimit" type="Integer" default="10"/>
+        <aura:attribute name="page" type="Integer" default="0"/>
+
+        <!-- ASC DESC -->
+        <aura:attribute name="ascDescVal" type="String" default="asc"/>
+        <aura:attribute name="sortField" type="String" default="Name"/>
+
+        <!-- Pagination Events -->
+        <!-- <aura:handler event="c:PaginationEvent" action="{!c.pagerecords}"/>
+        <aura:handler event="c:MyOutputClickEvt" action="{!c.customSort}"/> -->
+    <!-- end -->
+
 
     
     <aura:handler event="c:opportunityTypeChangeEvent" action="{!c.handleRenderContracts}" />

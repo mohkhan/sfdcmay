@@ -12,8 +12,12 @@
         var withBaseLineType = "Create Opportunity with Contract Baseline";
         //console.log('equals to opptyBaslineType? :' + opptyBaslineType  + '; withBaseLineType: ' withBaseLineType);
         if (!this.isEmpty(acc) &&  !this.isEmpty(opptyBaslinePicked) && (opptyBaslinePicked.toUpperCase() === withBaseLineType.toUpperCase())) {
+            
             console.log('qualifies'); 
-            this.getContracts(component, event);
+            component.set("v.acct", acc);
+
+            //this.getContracts(component, event);
+            this.queryRows(component, 0, '');
             
         }
         else {
@@ -32,6 +36,60 @@
         // selection
 
     },
+
+    queryRows : function(component, page, sOrder) {
+        
+        var action = component.get("c.getActiveContractsByAccIdPagination");
+        //console.log("=== fields ===="+fields);
+        var params = { "acc": component.get("v.acct"), "lim": component.get("v.pagelimit") || 10, "currentPage": page, 
+                       "sortField" : component.get("v.sortField"), "sortOrder" :  sOrder || "asc" };
+        console.log(JSON.stringify(params));
+        action.setParams(params);
+        action.setCallback(this, function(response) {
+            console.log(response.getState());
+            if (response && response.getState() === "SUCCESS" && component.isValid()) {
+                var recordset = response.getReturnValue();
+                console.log(JSON.stringify(recordset));
+                component.set("v.doneLoading", true);
+
+                
+                component.set("v.contracts", recordset.rows);
+                component.set("v.resultsetsize", recordset.size);
+
+
+                if (this.isEmpty(recordset.rows) || this.isEmpty(recordset.size) || recordset.size<1) {
+
+                    component.set("v.noContractsFound", true);
+                    console.log('inside resultsNOTFound');
+
+                } else {
+                    console.log('inside resultsFound');
+                    //component.set("v.doneLoading", true); 
+                    component.set("v.noContractsFound", false); 
+                    this.setContractsMap(component); 
+
+                }
+                
+                // Clean up the stateVariables...
+                this.refreshState(component);
+                /* need to uncomment this.
+                */
+            }
+
+        });
+        $A.enqueueAction(action);
+
+    },
+
+    refreshState : function(component) {
+
+        // Clean up the state variables...
+        component.set("v.selectedContracts", []);
+
+        // fire refrsh to dependent components.
+        this.fireContractChangeEvent(null, null, null);
+
+    },   
 
     setContractsMap : function(component, event) {
 
@@ -102,19 +160,6 @@
             } else {
                 console.log("Action State returned was: " + state); 
             }
-            /*
-             * else if (component.isValid() && state=== "ERROR") {
-                var errors = response.getError();
-                if (errors) {
-                    if (errors[0] && errors[0].message) {
-                        $A.error("Error message: " + 
-                                errors[0].message);
-                    }
-                } else {
-                 	$A.error("Unknown error");
-                }
-            }
-            */
         });
         $A.enqueueAction(action);
     },
@@ -252,12 +297,12 @@
     	
         // fire the event...
 		var contracts = tmp;
-        var acc = component.get("v.acc");
+        var acc = component.get("v.acct");
         console.log('Inside listContracts, contracts:' + contracts + ', acc:' + acc + ', jsonContracts:' + JSON.stringify(tmp));
 
         var currencyMisMatch = component.get("v.isContractCurrencyMismatch");
         console.log("fireContractChangeEvent:currencyMisMatch=" + currencyMisMatch);
-        this.fireContractChangeEvent(acc, tmp, currencyMisMatch); //JSON.stringify(tmp)
+        this.fireContractChangeEvent(acc.Id, tmp, currencyMisMatch); //JSON.stringify(tmp)
   //       var appEvent = $A.get("e.c:onContractSelectionChange");
   //       appEvent.setParams({"contracts" : JSON.stringify(tmp)});        
 		// appEvent.setParams({"accountId" : acc});
