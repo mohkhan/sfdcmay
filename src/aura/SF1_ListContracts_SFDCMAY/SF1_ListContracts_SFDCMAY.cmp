@@ -1,4 +1,4 @@
-<!--SF1_ListContracts--> 
+<!--SF1_ListContracts_SFDCMAY--> 
 <aura:component implements="force:appHostable,flexipage:availableForAllPageTypes" access="global" controller="SF1_ListContractsController">
     <!--aura:component controller="ListContractsController"-->
     <!--aura:attribute name="contract" type="Merge_Contract_Header__c"/-->
