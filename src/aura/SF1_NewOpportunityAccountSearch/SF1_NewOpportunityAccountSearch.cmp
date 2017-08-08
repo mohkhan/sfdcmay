@@ -1,0 +1,17 @@
+<!-- SF1_NewOpportunityAccountSearch -->
+<aura:component implements="flexipage:availableForAllPageTypes" access="global" >
+    <!-- HEADER START -->
+    <aura:attribute name="title" type="String" access="global" default="Create Opportunity Flow" />
+	 <div class="slds-page-header">
+        <p class="slds-page-header__title" title="{!v.title}">{!v.title}</p>
+    </div>	
+    <!-- HEADER END -->
+    
+    <aura:attribute name="acc" type="Account" access="global" />
+     <div class="slds-page-header">
+        <p class="slds-page-header__title" title="{!v.acc}">{!v.acc}</p>
+    </div>	
+    
+
+	
+</aura:component>

@@ -1,0 +1,260 @@
+<!--SF1_SearchAccount--> 
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,force:lightningQuickAction" access="global" >
+  <table class="slds-table slds-table--bordered slds-table--resizable-cols slds-table--fixed-layout" role="grid">
+  <thead>
+    <tr class="slds-line-height--reset">
+      <th scope="col" style="width:3.25rem;" class="slds-text-align--right">
+        <div class="slds-th__action slds-th__action--form">
+          <span class="slds-checkbox">
+            <input type="checkbox" name="options" id="checkbox-118" />
+            <label class="slds-checkbox__label" for="checkbox-118">
+              <span class="slds-checkbox--faux"></span>
+              <span class="slds-form-element__label slds-assistive-text">Select All</span>
+            </label>
+          </span>
+        </div>
+      </th>
+      <th class="slds-is-sortable slds-is-resizable slds-text-title--caps" scope="col">
+        <a href="javascript:void(0);" class="slds-th__action slds-text-link--reset" tabindex="0">
+          <span class="slds-assistive-text">Sort </span>
+          <span class="slds-truncate" title="Name">Name</span>
+          <div class="slds-icon_container">
+            <lightning:icon iconName="utility:arrowdown" size="x-small" alternativeText="arrowdown" class="slds-icon slds-icon--x-small slds-icon-text-default slds-is-sortable__icon"/>
+          </div>
+          <span class="slds-assistive-text" aria-live="assertive" aria-atomic="true"></span>
+        </a>
+        <div class="slds-resizable">
+          <label for="cell-resize-handle-553" class="slds-assistive-text">Name column width</label>
+          <input type="range" min="20" max="1000" class="slds-resizable__input slds-assistive-text" id="cell-resize-handle-553" tabindex="0" />
+          <span class="slds-resizable__handle">
+            <span class="slds-resizable__divider"></span>
+          </span>
+        </div>
+      </th>
+      <th class="slds-is-sortable slds-is-resizable slds-text-title--caps" scope="col">
+        <a href="javascript:void(0);" class="slds-th__action slds-text-link--reset" tabindex="0">
+          <span class="slds-assistive-text">Sort </span>
+          <span class="slds-truncate" title="Account Name">Account Name</span>
+          <div class="slds-icon_container">
+            <lightning:icon iconName="utility:arrowdown" size="x-small" alternativeText="arrowdown" class="slds-icon slds-icon--x-small slds-icon-text-default slds-is-sortable__icon"/>
+          </div>
+          <span class="slds-assistive-text" aria-live="assertive" aria-atomic="true"></span>
+        </a>
+        <div class="slds-resizable">
+          <label for="cell-resize-handle-554" class="slds-assistive-text">Account Name column width</label>
+          <input type="range" min="20" max="1000" class="slds-resizable__input slds-assistive-text" id="cell-resize-handle-554" tabindex="0" />
+          <span class="slds-resizable__handle">
+            <span class="slds-resizable__divider"></span>
+          </span>
+        </div>
+      </th>
+      <th class="slds-is-sortable slds-is-resizable slds-text-title--caps" scope="col">
+        <a href="javascript:void(0);" class="slds-th__action slds-text-link--reset" tabindex="0">
+          <span class="slds-assistive-text">Sort </span>
+          <span class="slds-truncate" title="Close Date">Close Date</span>
+          <div class="slds-icon_container">
+            <lightning:icon iconName="utility:arrowdown" size="x-small" alternativeText="arrowdown"/>
+          </div>
+          <span class="slds-assistive-text" aria-live="assertive" aria-atomic="true"></span>
+        </a>
+        <div class="slds-resizable">
+          <label for="cell-resize-handle-555" class="slds-assistive-text">Close Date column width</label>
+          <input type="range" min="20" max="1000" class="slds-resizable__input slds-assistive-text" id="cell-resize-handle-555" tabindex="0" />
+          <span class="slds-resizable__handle">
+            <span class="slds-resizable__divider"></span>
+          </span>
+        </div>
+      </th>
+      <th class="slds-is-sortable slds-is-resizable slds-text-title--caps" scope="col">
+        <a href="javascript:void(0);" class="slds-th__action slds-text-link--reset" tabindex="0">
+          <span class="slds-assistive-text">Sort </span>
+          <span class="slds-truncate" title="Stage">Stage</span>
+          <div class="slds-icon_container">
+            <lightning:icon iconName="utility:arrowdown" size="x-small" alternativeText="arrowdown"/>
+          </div>
+          <span class="slds-assistive-text" aria-live="assertive" aria-atomic="true"></span>
+        </a>
+        <div class="slds-resizable">
+          <label for="cell-resize-handle-556" class="slds-assistive-text">Stage column width</label>
+          <input type="range" min="20" max="1000" class="slds-resizable__input slds-assistive-text" id="cell-resize-handle-556" tabindex="0" />
+          <span class="slds-resizable__handle">
+            <span class="slds-resizable__divider"></span>
+          </span>
+        </div>
+      </th>
+      <th class="slds-is-sortable slds-is-resizable slds-text-title--caps" scope="col">
+        <a href="javascript:void(0);" class="slds-th__action slds-text-link--reset" tabindex="0">
+          <span class="slds-assistive-text">Sort </span>
+          <span class="slds-truncate" title="Confidence">Confidence</span>
+          <div class="slds-icon_container">
+            <lightning:icon iconName="utility:arrowdown" size="x-small" alternativeText="arrowdown"/>
+          </div>
+          <span class="slds-assistive-text" aria-live="assertive" aria-atomic="true"></span>
+        </a>
+        <div class="slds-resizable">
+          <label for="cell-resize-handle-557" class="slds-assistive-text">Confidence column width</label>
+          <input type="range" min="20" max="1000" class="slds-resizable__input slds-assistive-text" id="cell-resize-handle-557" tabindex="0" />
+          <span class="slds-resizable__handle">
+            <span class="slds-resizable__divider"></span>
+          </span>
+        </div>
+      </th>
+      <th class="slds-is-sortable slds-is-resizable slds-text-title--caps" scope="col">
+        <a href="javascript:void(0);" class="slds-th__action slds-text-link--reset" tabindex="0">
+          <span class="slds-assistive-text">Sort </span>
+          <span class="slds-truncate" title="Amount">Amount</span>
+          <div class="slds-icon_container">
+            <lightning:icon iconName="utility:arrowdown" size="x-small" alternativeText="arrowdown"/>
+          </div>
+          <span class="slds-assistive-text" aria-live="assertive" aria-atomic="true"></span>
+        </a>
+        <div class="slds-resizable">
+          <label for="cell-resize-handle-558" class="slds-assistive-text">Amount column width</label>
+          <input type="range" min="20" max="1000" class="slds-resizable__input slds-assistive-text" id="cell-resize-handle-558" tabindex="0" />
+          <span class="slds-resizable__handle">
+            <span class="slds-resizable__divider"></span>
+          </span>
+        </div>
+      </th>
+      <th class="slds-is-sortable slds-is-resizable slds-text-title--caps" scope="col">
+        <a href="javascript:void(0);" class="slds-th__action slds-text-link--reset" tabindex="0">
+          <span class="slds-assistive-text">Sort </span>
+          <span class="slds-truncate" title="Contact">Contact</span>
+          <div class="slds-icon_container">
+            <lightning:icon iconName="utility:arrowdown" size="x-small" alternativeText="arrowdown"/>
+          </div>
+          <span class="slds-assistive-text" aria-live="assertive" aria-atomic="true"></span>
+        </a>
+        <div class="slds-resizable">
+          <label for="cell-resize-handle-559" class="slds-assistive-text">Contact column width</label>
+          <input type="range" min="20" max="1000" class="slds-resizable__input slds-assistive-text" id="cell-resize-handle-559" tabindex="0" />
+          <span class="slds-resizable__handle">
+            <span class="slds-resizable__divider"></span>
+          </span>
+        </div>
+      </th>
+      <th scope="col" style="width:3.25rem;">
+        <div class="slds-th__action">
+          <span class="slds-assistive-text">Actions</span>
+        </div>
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr class="slds-hint-parent">
+      <td role="gridcell" class="slds-text-align--right" style="width:3.25rem;">
+        <span class="slds-checkbox">
+          <input type="checkbox" name="options" id="checkbox-119" />
+          <label class="slds-checkbox__label" for="checkbox-119">
+            <span class="slds-checkbox--faux"></span>
+            <span class="slds-form-element__label slds-assistive-text">Select item 1</span>
+          </label>
+        </span>
+      </td>
+      <th scope="row">
+        <div class="slds-truncate" title="Acme - 1,200 Widgets"><a href="javascript:void(0);">Acme - 1,200 Widgets</a></div>
+      </th>
+      <td role="gridcell">
+        <div class="slds-truncate" title="Acme">Acme</div>
+      </td>
+      <td role="gridcell">
+        <div class="slds-truncate" title="4/10/15">4/10/15</div>
+      </td>
+      <td role="gridcell">
+        <div class="slds-truncate" title="Value Proposition">Value Proposition</div>
+      </td>
+      <td role="gridcell">
+        <div class="slds-truncate" title="30%">30%</div>
+      </td>
+      <td role="gridcell">
+        <div class="slds-truncate" title="$25,000,000">$25,000,000</div>
+      </td>
+      <td role="gridcell">
+        <div class="slds-truncate" title="jrogers@acme.com"><a href="javascript:void(0);">jrogers@acme.com</a></div>
+      </td>
+      <td role="gridcell" style="width:3.25rem;">
+        <button class="slds-button slds-button--icon-border-filled slds-button--icon-x-small" title="Show More">
+          <lightning:icon iconName="utility:down" size="x-small" alternativeText="down"/>
+          <span class="slds-assistive-text">Show More</span>
+        </button>
+      </td>
+    </tr>
+    <tr class="slds-hint-parent">
+      <td role="gridcell" class="slds-text-align--right" style="width:3.25rem;">
+        <span class="slds-checkbox">
+          <input type="checkbox" name="options" id="checkbox-120" />
+          <label class="slds-checkbox__label" for="checkbox-120">
+            <span class="slds-checkbox--faux"></span>
+            <span class="slds-form-element__label slds-assistive-text">Select item 2</span>
+          </label>
+        </span>
+      </td>
+      <th scope="row">
+        <div class="slds-truncate" title="Acme - 200 Widgets"><a href="javascript:void(0);">Acme - 200 Widgets</a></div>
+      </th>
+      <td role="gridcell">
+        <div class="slds-truncate" title="Acme">Acme</div>
+      </td>
+      <td role="gridcell">
+        <div class="slds-truncate" title="1/31/15">1/31/15</div>
+      </td>
+      <td role="gridcell">
+        <div class="slds-truncate" title="Prospecting">Prospecting</div>
+      </td>
+      <td role="gridcell">
+        <div class="slds-truncate" title="60%">60%</div>
+      </td>
+      <td role="gridcell">
+        <div class="slds-truncate" title="$5,000,000">$5,000,000</div>
+      </td>
+      <td role="gridcell">
+        <div class="slds-truncate" title="bob@acme.com"><a href="javascript:void(0);">bob@acme.com</a></div>
+      </td>
+      <td role="gridcell" style="width:3.25rem;">
+        <button class="slds-button slds-button--icon-border-filled slds-button--icon-x-small" title="Show More">
+          <lightning:icon iconName="utility:down" size="x-small" alternativeText="down"/>
+          <span class="slds-assistive-text">Show More</span>
+        </button>
+      </td>
+    </tr>
+    <tr class="slds-hint-parent">
+      <td role="gridcell" class="slds-text-align--right" style="width:3.25rem;">
+        <span class="slds-checkbox">
+          <input type="checkbox" name="options" id="checkbox-121" />
+          <label class="slds-checkbox__label" for="checkbox-121">
+            <span class="slds-checkbox--faux"></span>
+            <span class="slds-form-element__label slds-assistive-text">Select item 3</span>
+          </label>
+        </span>
+      </td>
+      <th scope="row">
+        <div class="slds-truncate" title="salesforce.com - 1,000 Widgets"><a href="javascript:void(0);">salesforce.com - 1,000 Widgets</a></div>
+      </th>
+      <td role="gridcell">
+        <div class="slds-truncate" title="salesforce.com">salesforce.com</div>
+      </td>
+      <td role="gridcell">
+        <div class="slds-truncate" title="1/31/15 3:45PM">1/31/15 3:45PM</div>
+      </td>
+      <td role="gridcell">
+        <div class="slds-truncate" title="Id. Decision Makers">Id. Decision Makers</div>
+      </td>
+      <td role="gridcell">
+        <div class="slds-truncate" title="70%">70%</div>
+      </td>
+      <td role="gridcell">
+        <div class="slds-truncate" title="$25,000">$25,000</div>
+      </td>
+      <td role="gridcell">
+        <div class="slds-truncate" title="nathan@salesforce.com"><a href="javascript:void(0);">nathan@salesforce.com</a></div>
+      </td>
+      <td role="gridcell" style="width:3.25rem;">
+        <button class="slds-button slds-button--icon-border-filled slds-button--icon-x-small" title="Show More">
+          <lightning:icon iconName="utility:down" size="x-small" alternativeText="down"/>
+          <span class="slds-assistive-text">Show More</span>
+        </button>
+      </td>
+    </tr>
+  </tbody>
+</table>
+</aura:component>

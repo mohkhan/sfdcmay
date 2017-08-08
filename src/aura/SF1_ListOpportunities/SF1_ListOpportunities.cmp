@@ -1,0 +1,24 @@
+<!-- SF1_ListOpportunities -->
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes" controller="SF1_CreateOpportunityController" access="global">
+    
+    <aura:attribute name="Opportunities" type="Opportunity[]"/>
+    <aura:attribute name="doneLoading" type="Boolean" default="false" />
+    
+    <!--aura:handler event="aura:waiting" action="{!c.showSpinner1}"/-->
+	<!--aura:handler event="aura:doneWaiting" action="{!c.hideSpinner1}"/-->
+    <aura:handler event="c:onContractSelectionChange" action="{!c.renderOpportunities}" />
+    <!--aura:handler event="c:SF1_ContractSelectionChange" action="{!c.renderOpportunities}" /-->
+    
+    <aura:if isTrue="{!v.doneLoading}">
+        <!-- div class="slds-grid slds-wrap slds-grid_pull-padded"-->
+        <div class="slds-p-top_large slds-m-top--large slds-grid slds-grid_vertical-align-start"> 
+            <legend class="slds-form-element__legend slds-form-element__label slds-section__title">Open Opportunities</legend>
+            <div class="slds-p-horizontal_small slds-size_1-of-1 slds-medium-size_4-of-12 slds-large-size_4-of-12">                
+                <aura:iteration items="{!v.Opportunities}" var="oppty">
+                    <c:SF1_OpportunityListItem Oppty="{!oppty}"/>
+                    <!--c:SF1_OpptyLineItem oppty="{!oppty}"/-->
+                </aura:iteration>
+            </div>
+        </div>
+    </aura:if>
+</aura:component>

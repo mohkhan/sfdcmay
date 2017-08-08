@@ -1,0 +1,6 @@
+<!-- SF1_ContractSelectionChange -->
+<!-- @todo: Need to only pass ListOfContracts for ContractSelectionChange event-->
+<aura:event type="APPLICATION" description="Triggered when Contract Selection changes.">
+    <aura:attribute name="opportunityIDs" type="String[]"/>
+    <aura:attribute name="accountId" type="String" />
+</aura:event>

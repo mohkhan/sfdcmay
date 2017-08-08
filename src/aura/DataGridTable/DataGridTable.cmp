@@ -1,0 +1,64 @@
+<!-- DataGridTable -->
+<aura:component >
+	
+    <aura:attribute name="rows" type="Object[]" description="rows of table"/>
+    <aura:attribute name="cols" type="Object[]" description="Columns of table" />
+    
+    <div class="slds container">
+    	<table class="slds-table slds-table--bordered">
+    	<thead>
+            <tr class="slds-text-heading--label">            	
+                 <!--aura:iteration items="{!v.cols}" var="col">
+                    <th class="{!col.class}"> {!col.label} </th>
+                </aura:iteration-->
+                <th class="colLabel1"> colLabel1 </th>
+                <th class="colLabel2"> colLabel2 </th>                
+                <th class="colLabel3"> colLabel3 </th>
+                <th class="colLabel4"> colLabel4 </th>
+            </tr>        	 
+        </thead>
+            
+        <tbody>
+            <tr class="slds-hint-parent"> 
+                <td class="colData1">
+                    colData1
+                </td>
+                <td class="colData2">
+                    colData2
+                </td>
+                <td class="colData3">
+                    colData3
+                </td>
+                <td class="colData4">
+                    colData4
+                </td>
+            </tr>
+            <tr class="slds-hint-parent"> 
+                <td class="colDataRow21">
+                    colDataRow21
+                </td>
+                <td class="colDataRow22">
+                    colDataRow22
+                </td>
+                <td class="colDataRow23">
+                    colDataRow23
+                </td>
+                <td class="colDataRow24">
+                    colDataRow24
+                </td>
+            </tr>
+            <!--aura:iteration items="{!v.rows}" var="row">
+                <tr class="slds-hint-parent"> 
+                	<aura:iteration items="{!row.dataColumns}" var="colData">
+                        <td class="{!colData.class}">
+                        	{!colData.data}
+                        </td>
+                    </aura:iteration>
+                </tr>
+             </aura:iteration-->              
+        </tbody>    
+    	</table>
+    </div>
+    
+    
+</aura:component>

@@ -1,0 +1,30 @@
+<!-- SF1_OpptyLineItem -->
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,force:lightningQuickAction" access="global" >
+<!-- controller="SF1_PRMSearchOppController" -->
+    <aura:attribute name="oppty" type="Opportunity"/>
+    <aura:attribute name="parent_oppty_id" type="Id"/>
+    <aura:attribute name="map" type="map"/>
+    <aura:attribute name="key" type="string"/>
+    <aura:attribute name="showError" type="Boolean"  default="false"/>
+    <aura:attribute name="message" type="String" />
+    
+    <div class="parentContainer">
+        <div class="slds-media__body" onclick="{!c.gotoRecord}">
+            <h3 class="slds-truncate" title="Opportunity">{!v.oppty.Name}</h3>
+            <div class="slds-tile__detail slds-text-body--small">
+                <dl class="slds-list--horizontal slds-wrap">
+                    <dt class="slds-item--label slds-text-color--weak slds-truncate" title="First Label">Owner:</dt>
+                    <dd class="slds-item--detail slds-truncate">{!v.oppty.Owner__r.Name}</dd>
+                    <dt class="slds-item--label slds-text-color--weak slds-truncate" title="Second Label">Stage:</dt>
+                    <dd class="slds-item--detail slds-truncate">{!v.oppty.StageName}</dd>
+                    <dt class="slds-item--label slds-text-color--weak slds-truncate" title="Third Label">Partner Involved:</dt>
+                    <dd class="slds-item--detail slds-truncate">{!v.oppty.Partner_Involved__r.Name}</dd>
+                </dl>
+            </div>
+        </div>
+        <lightning:button class="button" variant="brand" label="Link To DR"  type="submit" onclick="{!c.linkToDR}" />
+        <aura:if isTrue="{!v.showError}">
+            <ui:message title="Error" severity="error" closable="false">{!v.message}</ui:message>
+        </aura:if>
+    </div>
+</aura:component>

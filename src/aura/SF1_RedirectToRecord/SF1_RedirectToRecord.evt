@@ -1,0 +1,5 @@
+<!-- SF1_RedirectToRecord -->
+<!-- @todo: Need to only pass ListOfContracts for ContractSelectionChange event-->
+<aura:event type="APPLICATION" description="Triggered when Contract Selection changes.">
+    <aura:attribute name="recordCreated" type="Boolean" default="false"/>
+</aura:event>

@@ -1,0 +1,6 @@
+<aura:component implements="flexipage:availableForAllPageTypes">
+    <aura:attribute name="title" type="String" access="global" default="New Opportunity Flow" />
+	 <div class="slds-page-header">
+        <p class="slds-page-header__title" title="{!v.title}">{!v.title}</p>
+    </div>	
+</aura:component>

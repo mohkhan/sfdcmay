@@ -1,0 +1,5 @@
+<!-- renderContracts -->
+<aura:event type="APPLICATION" description="Used for rendering Contracts List.">
+    <aura:attribute name="contracts" type="Merge_Contract_Header__c[]"/>
+    <aura:attribute name="accIDs" type="String[]" />
+</aura:event>

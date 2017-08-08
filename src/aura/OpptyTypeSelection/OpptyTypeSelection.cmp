@@ -1,0 +1,81 @@
+<!-- OpptyTypeSelection -->
+<aura:component >
+    <aura:attribute name="stages" type="String[]" default="Any,Open,Closed,Closed Won"/>
+    <aura:iteration items="{!v.stages}" var="stage">
+     <ui:inputRadio label="{!stage}" change="{!c.onRadio}" />
+    </aura:iteration>
+   
+   <b>Selected Item:</b>
+   <p><ui:outputText class="result" aura:id="radioResult" value="" /></p>
+    
+   <aura:attribute name="status" type="String[]" default="Open, Closed, Closed Won, Any"/>
+    <ui:menu >
+        <ui:menuTriggerLink class="radioMenuLabel" aura:id="radioMenuLabel" label="Select a status"/>
+        <ui:menuList class="radioMenu" aura:id="radioMenu">
+            <aura:iteration items="{!v.status}" var="s">
+                <ui:radioMenuItem label="{!s}"/>
+            </aura:iteration>
+        </ui:menuList>
+    </ui:menu>   
+    
+	<div aura:id="flow-type" >
+		<lightning:input aura:id="rad-1" type="radio" label="Red" name="red" value="red" onchange="{!c.onGroup1}"/>
+	    <lightning:input aura:id="rad-2" type="radio" label="Blue" name="red" value="blue" onchange="{!c.onGroup1}"/>
+	</div>   
+    <b>Selected Items:</b>
+   <p><ui:outputText class="result" aura:id="basline-select-result" value="" /></p>
+    
+   <fieldset class="slds-form-element">
+  <legend class="slds-form-element__legend slds-form-element__label">
+    <abbr class="slds-required" title="required">*</abbr> Radio Group Label</legend>
+  <div class="slds-form-element__control">
+    <span class="slds-radio">
+      <input type="radio" id="radio-29" name="options" checked="" />
+      <label class="slds-radio__label" for="radio-29">
+        <span class="slds-radio--faux"></span>
+        <span class="slds-form-element__label">Radio Label One</span>
+      </label>
+    </span>
+    <span class="slds-radio">
+      <input type="radio" id="radio-30" name="options" />
+      <label class="slds-radio__label" for="radio-30">
+        <span class="slds-radio--faux"></span>
+        <span class="slds-form-element__label">Radio Label Two</span>
+      </label>
+    </span>
+  </div>
+</fieldset>
+   <b>Selected Items:</b>
+   <p>{!options}</p>
+
+    
+    
+   <b>Radio Buttons - Group</b>
+   <ui:inputRadio aura:id="r0" name="others" label="Prospecting" change="{!c.onGroup}" class="slds-radio"/>
+   <ui:inputRadio aura:id="r1" name="others" label="Qualification" change="{!c.onGroup}" />
+   <ui:inputRadio aura:id="r2" name="others" label="Needs Analysis" change="{!c.onGroup}"/>
+   <ui:inputRadio aura:id="r3" name="others" label="Closed Lost" change="{!c.onGroup}"/>
+   <b>Selected Items:</b>
+   <p><ui:outputText class="result" aura:id="radioGroupResult" value="" /></p>
+    
+    <fieldset class="slds-form-element">
+      <legend class="slds-form-element__legend slds-form-element__label">Radio Buttons - Group Custom</legend>
+      <div class="slds-form-element__control">
+        <span class="slds-radio">
+          <input type="radio" id="radio-25" name="options" checked="" />
+          <label class="slds-radio__label" for="radio-25">
+            <span class="slds-radio--faux"></span>
+            <span class="slds-form-element__label">without baseline</span>
+          </label>
+        </span>
+        <span class="slds-radio">
+          <input type="radio" id="radio-26" name="options" />
+          <label class="slds-radio__label" for="radio-26">
+            <span class="slds-radio--faux"></span>
+            <span class="slds-form-element__label">with base line.</span>
+          </label>
+        </span>
+      </div>
+	</fieldset>
+
+</aura:component>
