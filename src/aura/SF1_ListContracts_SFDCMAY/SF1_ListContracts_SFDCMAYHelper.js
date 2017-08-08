@@ -157,6 +157,19 @@
 
     },
 
+    getSortOrder : function(cmp, changeorder) {
+        if (changeorder && changeorder === true) {
+            if (cmp.get("v.ascDescVal") === "asc") {
+                cmp.set("v.ascDescVal", "desc");
+            } else if (cmp.get("v.ascDescVal") === "desc") {
+                cmp.set("v.ascDescVal", "asc");
+            } else {
+                cmp.set("v.ascDescVal", "desc");
+            }    
+        }
+        return cmp.get("v.ascDescVal");
+    },
+
 
     setCurrencyMisMatch : function (component, event) {
 
@@ -167,15 +180,12 @@
 
         if (!this.isEmpty(contractsMap) &&  !this.isEmpty(selectedContractIds)) {
             
+
             var currSet = new Set();
-            for (var i in selectedContractIds) {
-                console.log('i=' + i + '; selectedContractIds:' + selectedContractIds[i]);
+            for(var i = 0; i < selectedContractIds.length; i++) {
                 var cont= contractsMap[selectedContractIds[i]];
-                console.log('currency=' + cont.Currency__c);
-                console.log('selectedContrac Rec:' + cont);
                 currSet.add(cont.Currency__c);
             }
-
             console.log('currSet=' + currSet.size + 'currSet=' + currSet.values().next().value);
             //console.log('currSet=' + currSet.size + 'currSet=' + currSet.values().next().value);
 

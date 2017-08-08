@@ -24,17 +24,17 @@
         <aura:attribute name="sortField" type="String" default="Name"/>
 
         <!-- Pagination Events -->
-        <!-- <aura:handler event="c:PaginationEvent" action="{!c.pagerecords}"/>
-        <aura:handler event="c:MyOutputClickEvt" action="{!c.customSort}"/> -->
+        <aura:handler event="c:SF1_CompEventPagination" name="compEventPagination" action="{!c.pagerecords}"/>
+        <!-- <aura:handler event="c:MyOutputClickEvt" action="{!c.customSort}"/> -->
+        
     <!-- end -->
 
-
-    
-    <aura:handler event="c:opportunityTypeChangeEvent" action="{!c.handleRenderContracts}" />
+    <!-- Events -->
+    <!--aura:handler name="init" value="{!this}" action="{!c.doInit}" /-->
     <!--aura:handler event="c:accountChangeEvent" action="{!c.handleAccountChange}" /-->
-
-	<!--aura:handler name="init" value="{!this}" action="{!c.doInit}" /-->
+    <aura:handler event="c:opportunityTypeChangeEvent" action="{!c.handleRenderContracts}" />
     
+    <!-- Events Fired -->
     <aura:registerEvent name="contractSelectionChangeEvent" type="c:onContractSelectionChange"/>
 
     <aura:if isTrue="{!v.doneLoading}">
@@ -285,6 +285,9 @@
                         </tbody>
                     </aura:iteration>
                 </table>
+                <div class="c-container" style="padding:10px">
+                    <c:Pagination pagelimit="{!v.pagelimit}" page="{!v.page}" resultsetsize="{!v.resultsetsize}" />
+                </div> 
             </aura:if>
         </div>
     </aura:if>

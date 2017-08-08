@@ -27,5 +27,12 @@
         })
         sObjectEvent.fire();
     },
+    pagerecords : function (cmp,event,helper) {
+        if (cmp.isValid()) { 
+            cmp.set("v.page", event.getParam("pagevalue"));
+            helper.queryRows(cmp, cmp.get("v.page") || 0, helper.getSortOrder(cmp, false));
+            // helper.fireContractChangeEvent(null, null, null);
+        }
+    },
     
 })
