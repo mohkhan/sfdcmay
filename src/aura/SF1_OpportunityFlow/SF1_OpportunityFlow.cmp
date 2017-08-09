@@ -45,7 +45,8 @@
         <c:SF1_AccountLookupCustom />
         <c:SF1_ContractBaselineSelection aura:id="baselineType"/>
         <!-- <c:SF1_ListContracts /> -->
-        <c:SF1_ListContracts_17_8 />
+        <c:SF1_ListContracts_SFDCMAY />
+        <!-- <c:SF1_ListContracts_17_8 /> -->
         <!--aura:if isTrue="{!v.showNewOpptyBtn}">
              <ui:message title="Error" severity="error" closable="false">
                 Note: Please select ‘Other Currency’ option to choose the opportunity Currency, as you’ve selected multiple Contracts of different currencies

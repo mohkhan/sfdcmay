@@ -34,5 +34,16 @@
             // helper.fireContractChangeEvent(null, null, null);
         }
     },
+    customSort : function(cmp,event,helper) {
+        if (cmp.isValid()) {
+
+            console.log('cmp-->' + JSON.stringify(cmp));
+            var fieldAPIName = event.getParam("fieldid");
+            cmp.set("v.sortField", fieldAPIName);
+            cmp.set("v.page", event.getParam("pagevalue"));
+            helper.queryRows(cmp, cmp.get("v.page") || 0, helper.getSortOrder(cmp, true));
+            
+        }
+    },
     
 })

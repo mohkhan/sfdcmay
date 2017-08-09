@@ -1,9 +1,9 @@
 ({
 	click : function(component, event, helper) {
-		Firing Appliction Event.
-		var clickEvt = $A.get("e.c:MyOutputClickEvt");
-        clickEvt.setParams({ "fieldid":component.get("v.recordid")});
-        clickEvt.fire();
+		
+		// var clickEvt = $A.get("e.c:MyOutputClickEvt");
+  //       clickEvt.setParams({ "fieldid":component.get("v.recordid")});
+  //       clickEvt.fire();
 
         //Firing Component Event.
         console.log('inside myoutputfieldcontroller.click function componentEvent.')
