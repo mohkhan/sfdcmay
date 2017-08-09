@@ -97,6 +97,9 @@
             cmp.set("v.page", event.getParam("pagevalue"));
             // helper.queryRows(cmp, cmp.get("v.page") || 0, helper.getSortOrder(cmp, true));
             // helper.getOpportunitiesByContractIds(cmp, event, cmp.get("v.page") || 0, helper.getSortOrder(cmp, true));
+
+            console.log('customSort:opptyMessageWithBaseline=' + cmp.get("v.opptyMessageWithBaseline"));
+            (cmp.get("v.opptyMessageWithBaseline") ? helper.queryWithBaselineRows(cmp, cmp.get("v.page") || 0, helper.getSortOrder(cmp, true)) : helper.queryWithoutBaselineRows(cmp, cmp.get("v.page") || 0, helper.getSortOrder(cmp, true)));
             
         }
     },

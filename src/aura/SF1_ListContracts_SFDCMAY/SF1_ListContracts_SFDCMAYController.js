@@ -36,7 +36,6 @@
     },
     customSort : function(cmp,event,helper) {
         if (cmp.isValid()) {
-
             console.log('cmp-->' + JSON.stringify(cmp));
             var fieldAPIName = event.getParam("fieldid");
             cmp.set("v.sortField", fieldAPIName);

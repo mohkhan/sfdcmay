@@ -21,8 +21,8 @@
     <aura:attribute name="sortField" type="String" default="Name"/> 
 
     <!-- Pagination Events -->
-    <!-- <aura:handler event="c:PaginationEvent" action="{!c.pagerecords}"/> -->
     <aura:handler event="c:SF1_CompEventPagination" name="compEventPagination" action="{!c.pagerecords}"/>
+    <aura:handler event="c:SF1_CompEventOuputField" name="compEventOutputField" action="{!c.customSort}"/>
     <!-- <aura:handler event="c:MyOutputClickEvt" action="{!c.customSort}"/> -->
     
     <!-- END MOB-158 changes... -->
@@ -65,20 +65,33 @@
                         <thead>
                             <tr class="slds-line-height--reset">
                                 <th class="slds-is-sortable slds-is-resizable slds-text-title--caps" style="width:40%; font-size: 95%;" scope="col">
-                                    <a href="javascript:void(0);" class="slds-th__action slds-text-link--reset" tabindex="0">
-                                        <span class="slds-assistive-text">Sort </span>
-                                        <span class="slds-truncate" title="Name">Name </span>
-                                        <div class="slds-icon_container">
-                                            <lightning:icon iconName="utility:arrowdown" size="x-small" alternativeText="arrowdown" class="slds-icon slds-icon--x-small slds-icon-text-default slds-is-sortable__icon"/>
-                                        </div>
-                                        <span class="slds-assistive-text" aria-live="assertive" aria-atomic="true"></span>
-                                    </a>
-                                    <div class="slds-resizable">
-                                        <label for="cell-resize-handle-553" class="slds-assistive-text">Name column width</label>
-                                        <input type="range" min="20" max="1000" class="slds-resizable__input slds-assistive-text" id="cell-resize-handle-553" tabindex="0" />
-                                        <span class="slds-resizable__handle">
-                                            <span class="slds-resizable__divider"></span>
-                                        </span>
+                                    <div title= "title:Name" id="id:Name" aura:id="aura:id:Name">
+                                        <a href="javascript:void(0);" class="slds-th__action slds-text-link--reset" tabindex="0">
+                                            <span class="slds-assistive-text">Sort </span>
+                                            <!-- <span class="slds-truncate" title="Name">Name </span> -->
+                                            <c:MyOutputField class="slds-truncate" value="Name" recordid="Name" />
+                                            <!-- <div class="slds-icon_container">
+                                                <lightning:icon iconName="utility:arrowdown" size="x-small" alternativeText="arrowdown" class="slds-icon slds-icon- -x-small slds-icon-text-default slds-is-sortable__icon"/>
+                                            </div> -->
+                                            <div class="slds-icon_container">
+                                                    <aura:if isTrue="{!and(v.sortField == 'Name', v.ascDescVal == 'desc')}">
+                                                        <lightning:icon iconName="utility:arrowdown" size="xx-small"/>
+                                                    </aura:if>
+                                                    
+                                                    <aura:if isTrue="{!and(v.sortField == 'Name', v.ascDescVal == 'asc')}">
+                                                        <lightning:icon iconName="utility:arrowup" size="xx-small"/>
+                                                    </aura:if>
+                                            </div> 
+                                            <span class="slds-assistive-text" aria-live="assertive" aria-atomic="true">Sorted {!if(v.ascDescVal == 'asc', 'ascending', 'descending')}</span>
+                                            <span class="slds-assistive-text" aria-live="assertive" aria-atomic="true"></span>
+                                        </a>
+                                        <!-- <div class="slds-resizable">
+                                            <label for="cell-resize-handle-553" class="slds-assistive-text">Name column width</label>
+                                            <input type="range" min="20" max="1000" class="slds-resizable__input slds-assistive-text" id="cell-resize-handle-553" tabindex="0" />
+                                            <span class="slds-resizable__handle">
+                                                <span class="slds-resizable__divider"></span>
+                                            </span>
+                                        </div> -->
                                     </div>
                                 </th> <!-- width:5.00rem; -->
                                 <th class="slds-is-sortable slds-is-resizable slds-text-title--caps" scope="col" style="font-size: 95%; width:6.00rem;">

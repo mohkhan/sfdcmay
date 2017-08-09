@@ -42,7 +42,7 @@
             if (response && response.getState() === "SUCCESS" && component.isValid()) {
                 var recordset = response.getReturnValue();
                 console.log(JSON.stringify(recordset));
-                component.set("v.doneLoading", true);
+                component.set("v.doneLoading", true); // should we move this outside of this function ? need to validate.
 
                 
                 component.set("v.contracts", recordset.rows);
