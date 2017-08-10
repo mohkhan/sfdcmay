@@ -44,5 +44,30 @@
             
         }
     },
+    openModal : function(component, event, helper) {
+
+        var contractId = event.target.name;
+        var contractsMap = component.get("v.contractsMap");
+        var contractRec = contractsMap[contractId];
+        //alert('contractRow=' + JSON.stringify(contractRec.Contract_Products__r));
+
+        $A.createComponent(
+            "c:SF1_ViewProducts",
+            // "c:productsViewModal",
+            {
+                // "aura:id": "findableAuraId",
+                "products": contractRec.Contract_Products__r,
+                "headerMsg": contractRec.Original_Contract_Id__c
+             },
+            function(msgBox){               
+                if (component.isValid()) {
+                    var targetCmp = component.find('ModalDialogPlaceholder');
+                    var body = targetCmp.get("v.body");
+                    body.push(msgBox);
+                    targetCmp.set("v.body", body);
+                }
+            }
+        );
+    },
     
 })
