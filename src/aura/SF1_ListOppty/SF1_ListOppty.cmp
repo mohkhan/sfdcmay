@@ -1,3 +1,4 @@
+<!-- SF1_ListOppty -->
 <aura:component controller="SF1_CreateOpportunityController">
     
     <aura:attribute name="Opportunities" type="Opportunity[]"/>

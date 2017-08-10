@@ -9,7 +9,7 @@
     <c:sldsModal aura:id="productsViewModal" closeAction="{!c.closeProductModal}">
         <aura:set attribute="header">
             <div><!--  slds-section__title  slds-text-heading_large -->
-                <h3 class="slds-section__title slds-text-align_left"><b>Contract Products for {!v.headerMsg}</b></h3>
+                <h3 class="slds-section__title slds-text-align_left"><b>Contract Products of {!v.headerMsg}</b></h3>
 
             </div>
         </aura:set>
@@ -43,10 +43,14 @@
                                     <div class="slds-truncate" title="{!prod.CurrencyIsoCode}">{!prod.CurrencyIsoCode}</div>
                                 </td>
                                  <td role="gridcell">
-                                    <div class="slds-truncate" title="{!prod.Average_Renewal_Commit_MRR__c}">{!prod.Average_Renewal_Commit_MRR__c}</div>
+                                    <div class="slds-truncate" title="{!prod.Average_Renewal_Commit_MRR__c}">
+                                        <ui:outputNumber value="{!prod.Average_Renewal_Commit_MRR__c}" format=".0"/>        
+                                    </div>
                                 </td>
                                 <td role="gridcell">
-                                    <div class="slds-truncate" title="{!prod.Average_Renewal_Usage_MRR__c}">{!prod.Average_Renewal_Usage_MRR__c}</div>
+                                    <div class="slds-truncate" title="{!prod.Average_Renewal_Usage_MRR__c}">
+                                        <ui:outputNumber value="{!prod.Average_Renewal_Usage_MRR__c}" format=".0"/>        
+                                    </div>
                                 </td>
                             </tr>
                         </tbody>
