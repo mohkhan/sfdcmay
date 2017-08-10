@@ -2,7 +2,7 @@
 <aura:component implements="force:appHostable,flexipage:availableForAllPageTypes" access="global" controller="SF1_ListContractsController">
     <!--aura:component controller="ListContractsController"-->
     <!--aura:attribute name="contract" type="Merge_Contract_Header__c"/-->
-    <aura:attribute name="acc" type="String"/>    
+    <aura:attribute name="acc" type="String"/>  
     <aura:attribute name="selectedContracts" type="String[]" />  
     <aura:attribute name="contracts" type="Merge_Contract_Header__c[]"/>
     <aura:attribute name="contractsMap" type="Map"/>
@@ -11,12 +11,32 @@
     <aura:attribute name="isContractCurrencyMismatch" type="Boolean" default="false" />
     <aura:attribute name="noContractsFound" type="Boolean" default="false" />
 
-    
-    <aura:handler event="c:opportunityTypeChangeEvent" action="{!c.handleRenderContracts}" />
-    <!--aura:handler event="c:accountChangeEvent" action="{!c.handleAccountChange}" /-->
+    <!-- new variables for 17_8 -->
+        <aura:attribute name="acct" type="Account"/>
+        <!-- MOB-158 changes for sorting...--> 
+        <aura:attribute name="resultsetsize" type="Integer" default="0"/>
+        <aura:attribute name="results" type="Object[]"/>
+        <aura:attribute name="pagelimit" type="Integer" default="10"/>
+        <aura:attribute name="page" type="Integer" default="0"/>
 
-	<!--aura:handler name="init" value="{!this}" action="{!c.doInit}" /-->
+        <!-- ASC DESC -->
+        <aura:attribute name="ascDescVal" type="String" default="asc"/>
+        <aura:attribute name="sortField" type="String" default="Name"/>
+
+        <!-- Pagination Events -->
+        <aura:handler event="c:SF1_CompEventPagination" name="compEventPagination" action="{!c.pagerecords}"/>
+        <aura:handler event="c:SF1_CompEventOuputField" name="compEventOutputField" action="{!c.customSort}"/>
+        
+        <!-- <aura:handler event="c:MyOutputClickEvt" action="{!c.customSort}"/> -->
+        
+    <!-- end -->
+
+    <!-- Events -->
+    <!--aura:handler name="init" value="{!this}" action="{!c.doInit}" /-->
+    <!--aura:handler event="c:accountChangeEvent" action="{!c.handleAccountChange}" /-->
+    <aura:handler event="c:opportunityTypeChangeEvent" action="{!c.handleRenderContracts}" /> 
     
+    <!-- Events Fired -->
     <aura:registerEvent name="contractSelectionChangeEvent" type="c:onContractSelectionChange"/>
 
     <aura:if isTrue="{!v.doneLoading}">
@@ -47,187 +67,171 @@
                                 </span>
                             </div-->
                             </th>
-                            <th class="slds-is-sortable slds-is-resizable slds-text-title--caps" scope="col" style="width:10.25rem; font-size: 95%;">
-                                <a href="javascript:void(0);" class="slds-th__action slds-text-link--reset" tabindex="0">
-                                    <span class="slds-assistive-text">Sort </span>
-                                    <span class="slds-truncate" title="Original Contract Id">Original Contract Id</span>
-                                    <div class="slds-icon_container">
-                                        <lightning:icon iconName="utility:arrowdown" size="xx-small" alternativeText="arrowdown" class="slds-icon slds-icon--xx-small slds-icon-text-default slds-is-sortable__icon"/>
-                                    </div>
-                                    <span class="slds-assistive-text" aria-live="assertive" aria-atomic="true"></span>
-                                </a>
-                                <!-- <div class="slds-resizable">
-                                    <label for="cell-resize-handle-553" class="slds-assistive-text">Original Contract Id column width</label>
-                                    <input type="range" min="50" max="3840" class="slds-resizable__input slds-assistive-text" id="cell-resize-handle-553" tabindex="0" />
-                                    <span class="slds-resizable__handle">
-                                        <span class="slds-resizable__divider"></span>
-                                    </span>
-                                </div> -->
-                                <div class="slds-resizable">
-                                    <input type="range" min="50" max="3840" class="slds-resizable__input slds-assistive-text keyboardMode--skipArrowNavigation keyboardMode--pauseOnFocus" aria-label="Original Contract Id column width"/>
-                                    <span class="slds-resizable__handle">
-                                        <span class="slds-resizable__divider" style="height: 538px;"></span>
-                                    </span>
+                            <th class="slds-is-sortable slds-is-resizable slds-text-title--caps" scope="col" style="font-size: 95%; width:10.50rem;">
+                                <div title= "title:Original Contract Id" id="id:Original_Contract_Id__c" aura:id="aura:id:Original_Contract_Id__c">
+                                    <a href="{javascript:void(0);}" class="slds-th__action slds-text-link--reset" tabindex="0">
+                                        <span class="slds-assistive-text">Sort </span>
+                                        <!-- <span class="slds-truncate" title="Original Contract Id">Original Contract Id</span>  -->
+                                        <c:MyOutputField class="slds-truncate" value="Original Contract Id" recordid="Original_Contract_Id__c" />
+                                        <!-- <div class="slds-icon_container">
+                                            <lightning:icon iconName="utility:arrowdown" size="x-small" alternativeText="arrowdown" class="slds-icon slds-icon- -x-small slds-icon-text-default slds-is-sortable__icon"/>
+                                        </div> -->
+                                        <div class="slds-icon_container">
+                                                <aura:if isTrue="{!and(v.sortField == 'Original_Contract_Id__c', v.ascDescVal == 'desc')}">
+                                                    <lightning:icon iconName="utility:arrowdown" size="xx-small"/>
+                                                </aura:if>
+                                                
+                                                <aura:if isTrue="{!and(v.sortField == 'Original_Contract_Id__c', v.ascDescVal == 'asc')}">
+                                                    <lightning:icon iconName="utility:arrowup" size="xx-small"/>
+                                                </aura:if>
+                                        </div> 
+                                        <span class="slds-assistive-text" aria-live="assertive" aria-atomic="true">Sorted {!if(v.ascDescVal == 'asc', 'ascending', 'descending')}</span>
+                                        <span class="slds-assistive-text" aria-live="assertive" aria-atomic="true"></span>
+                                    </a>
+                                   <!--  <div class="slds-resizable">
+                                        <input type="range" min="50" max="3840" class="slds-resizable__input slds-assistive-text keyboardMode- -skipArrowNavigation keyboardMode- -pauseOnFocus" aria-label="Original Contract Id column width"/>
+                                        <span class="slds-resizable__handle">
+                                            <span class="slds-resizable__divider" style="height: 538px;"></span>
+                                        </span>
+                                    </div> -->
                                 </div>
                             </th>
-                            <th class="slds-is-sortable slds-is-resizable slds-text-title--caps" scope="col" style="font-size: 95%;width:8.50rem;">
+                            <!-- <th class="slds-is-sortable slds-is-resizable slds-text-title- -caps" scope="col" style="font-size: 95%;width:8.50rem;"> style="font-size: 95%; width:8.50rem;" -->
+                            <th class="slds-is-sortable slds-is-resizable slds-text-title--caps" scope="col" style="font-size: 95%; width:8.50rem;">
                                 <a href="javascript:void(0);" class="slds-th__action slds-text-link--reset" tabindex="0">
                                     <span class="slds-assistive-text">Sort </span>
-                                    <span class="slds-truncate" title="Parent Contract">Parent Contract</span>
+                                     <c:MyOutputField class="slds-truncate" value="Parent Contract" recordid="Parent_Contract__c" />
                                     <div class="slds-icon_container">
-                                        <lightning:icon iconName="utility:arrowdown" size="xx-small" alternativeText="arrowdown" class="slds-icon slds-icon--xx-small slds-icon-text-default slds-is-sortable__icon"/>
-                                    </div>
+                                        <aura:if isTrue="{!and(v.sortField == 'Parent_Contract__c', v.ascDescVal == 'desc')}">
+                                            <lightning:icon iconName="utility:arrowdown" size="xx-small"/>
+                                        </aura:if>
+                                        
+                                        <aura:if isTrue="{!and(v.sortField == 'Parent_Contract__c', v.ascDescVal == 'asc')}">
+                                            <lightning:icon iconName="utility:arrowup" size="xx-small"/>
+                                        </aura:if>
+                                    </div> 
+                                    <span class="slds-assistive-text" aria-live="assertive" aria-atomic="true">Sorted {!if(v.ascDescVal == 'asc', 'ascending', 'descending')}</span>
                                     <span class="slds-assistive-text" aria-live="assertive" aria-atomic="true"></span>
                                 </a>
-                                <div class="slds-resizable">
-                                    <label for="cell-resize-handle-554" class="slds-assistive-text">Parent Contract column width</label>
-                                    <input type="range" min="20" max="1000" class="slds-resizable__input slds-assistive-text" id="cell-resize-handle-554" tabindex="0" />
-                                    <span class="slds-resizable__handle">
-                                        <span class="slds-resizable__divider"></span>
-                                    </span>
-                                </div>
                             </th>
+                            <!-- <th class="slds-is-sortable slds-is-resizable slds-text-title- -caps" scope="col" style="font-size: 95%; width:5.00rem;"> style="font-size: 95%; width:6.00rem;" -->
                             <th class="slds-is-sortable slds-is-resizable slds-text-title--caps" scope="col" style="font-size: 95%; width:5.00rem;">
                                 <a href="javascript:void(0);" class="slds-th__action slds-text-link--reset" tabindex="0">
                                     <span class="slds-assistive-text">Sort </span>
-                                    <span class="slds-truncate" title="Order Id">Order Id</span>
+                                    <c:MyOutputField class="slds-truncate" value="Order Id" recordid="Order_Id__c" />
                                     <div class="slds-icon_container">
-                                        <lightning:icon iconName="utility:arrowdown" size="xx-small" alternativeText="arrowdown" class="slds-icon slds-icon--xx-small slds-icon-text-default slds-is-sortable__icon"/>
-                                    </div>
-                                    <span class="slds-assistive-text" aria-live="assertive" aria-atomic="true"></span>
-                                </a>
-                                <div class="slds-resizable">
-                                    <label for="cell-resize-handle-554" class="slds-assistive-text">Order Id column width</label>
-                                    <input type="range" min="20" max="1000" class="slds-resizable__input slds-assistive-text" id="cell-resize-handle-554" tabindex="0" />
-                                    <span class="slds-resizable__handle">
-                                        <span class="slds-resizable__divider"></span>
-                                    </span>
-                                </div>
+                                        <aura:if isTrue="{!and(v.sortField == 'Order_Id__c', v.ascDescVal == 'desc')}">
+                                            <lightning:icon iconName="utility:arrowdown" size="xx-small"/>
+                                        </aura:if>
+                                        <aura:if isTrue="{!and(v.sortField == 'Order_Id__c', v.ascDescVal == 'asc')}">
+                                            <lightning:icon iconName="utility:arrowup" size="xx-small"/>
+                                        </aura:if>
+                                    </div> 
+                                    <span class="slds-assistive-text" aria-live="assertive" aria-atomic="true">Sorted {!if(v.ascDescVal == 'asc', 'ascending', 'descending')}</span>
+                                </a>  
                             </th>
-                            <th class="slds-is-sortable slds-is-resizable slds-text-title--caps" scope="col" style="font-size: 95%; width:5.00rem;">
+                            <!-- <th class="slds-is-sortable slds-is-resizable slds-text-title- -caps" scope="col" style="font-size: 95%; width:5.00rem;"> style="font-size: 95%; width:6.00rem;" -->
+                            <th class="slds-is-sortable slds-is-resizable slds-text-title--caps" scope="col" style="font-size: 95%; width:5.75rem;">
                                 <a href="javascript:void(0);" class="slds-th__action slds-text-link--reset" tabindex="0">
                                     <span class="slds-assistive-text">Sort </span>
-                                    <span class="slds-truncate" title="Currency">Currency</span>
+                                    <c:MyOutputField class="slds-truncate" value="Currency" recordid="Currency__c" />
                                     <div class="slds-icon_container">
-                                        <lightning:icon iconName="utility:arrowdown" size="xx-small" alternativeText="arrowdown" class="slds-icon slds-icon--xx-small slds-icon-text-default slds-is-sortable__icon"/>
-                                    </div>
-                                    <span class="slds-assistive-text" aria-live="assertive" aria-atomic="true"></span>
+                                        <aura:if isTrue="{!and(v.sortField == 'Currency__c', v.ascDescVal == 'desc')}">
+                                            <lightning:icon iconName="utility:arrowdown" size="xx-small"/>
+                                        </aura:if>
+                                        <aura:if isTrue="{!and(v.sortField == 'Currency__c', v.ascDescVal == 'asc')}">
+                                            <lightning:icon iconName="utility:arrowup" size="xx-small"/>
+                                        </aura:if>
+                                    </div> 
+                                    <span class="slds-assistive-text" aria-live="assertive" aria-atomic="true">Sorted {!if(v.ascDescVal == 'asc', 'ascending', 'descending')}</span>
                                 </a>
-                                <div class="slds-resizable">
-                                    <label for="cell-resize-handle-554" class="slds-assistive-text">Currency column width</label>
-                                    <input type="range" min="20" max="1000" class="slds-resizable__input slds-assistive-text" id="cell-resize-handle-554" tabindex="0" />
-                                    <span class="slds-resizable__handle">
-                                        <span class="slds-resizable__divider"></span>
-                                    </span>
-                                </div>
                             </th>
-                            <th class="slds-is-sortable slds-is-resizable slds-text-title--caps" scope="col" style="font-size: 95%;width:7.50rem;">
+                            <!-- <th class="slds-is-sortable slds-is-resizable slds-text-title- -caps" scope="col" style="font-size: 95%;width:7.50rem;"> style="font-size: 95%; width:8.50rem;">-->
+                            <th class="slds-is-sortable slds-is-resizable slds-text-title--caps" scope="col" style="font-size: 95%; width:7.50rem;">
                                 <a href="javascript:void(0);" class="slds-th__action slds-text-link--reset" tabindex="0">
                                     <span class="slds-assistive-text">Sort </span>
-                                    <span class="slds-truncate" title="Contract Type">Contract Type</span>
+                                    <c:MyOutputField class="slds-truncate" value="Contract Type" recordid="Contract_Type__c" />
                                     <div class="slds-icon_container">
-                                        <lightning:icon iconName="utility:arrowdown" size="xx-small" alternativeText="arrowdown" class="slds-icon slds-icon--xx-small slds-icon-text-default slds-is-sortable__icon"/>
-                                    </div>
-                                    <span class="slds-assistive-text" aria-live="assertive" aria-atomic="true"></span>
+                                        <aura:if isTrue="{!and(v.sortField == 'Contract_Type__c', v.ascDescVal == 'desc')}">
+                                            <lightning:icon iconName="utility:arrowdown" size="xx-small"/>
+                                        </aura:if>
+                                        <aura:if isTrue="{!and(v.sortField == 'Contract_Type__c', v.ascDescVal == 'asc')}">
+                                            <lightning:icon iconName="utility:arrowup" size="xx-small"/>
+                                        </aura:if>
+                                    </div> 
+                                    <span class="slds-assistive-text" aria-live="assertive" aria-atomic="true">Sorted {!if(v.ascDescVal == 'asc', 'ascending', 'descending')}</span>
                                 </a>
-                                <div class="slds-resizable">
-                                    <label for="cell-resize-handle-555" class="slds-assistive-text">Contract Type column width</label>
-                                    <input type="range" min="20" max="1000" class="slds-resizable__input slds-assistive-text" id="cell-resize-handle-555" tabindex="0" />
-                                    <span class="slds-resizable__handle">
-                                        <span class="slds-resizable__divider"></span>
-                                    </span>
-                                </div>
+                            </th>
+                            <!-- style="font-size: 95%; width:10.25rem;" -->
+                            <th class="slds-is-sortable slds-is-resizable slds-text-title--caps" scope="col" style="font-size: 95%; width:11.00rem;">
+                                <a href="javascript:void(0);" class="slds-th__action slds-text-link--reset" tabindex="0">
+                                    <span class="slds-assistive-text">Sort </span>
+                                    <c:MyOutputField class="slds-truncate" value="Parent Account Name" recordid="Parent_Account_Name__c" />
+                                    <div class="slds-icon_container">
+                                        <aura:if isTrue="{!and(v.sortField == 'Parent_Account_Name__c', v.ascDescVal == 'desc')}">
+                                            <lightning:icon iconName="utility:arrowdown" size="xx-small"/>
+                                        </aura:if>
+                                        <aura:if isTrue="{!and(v.sortField == 'Parent_Account_Name__c', v.ascDescVal == 'asc')}">
+                                            <lightning:icon iconName="utility:arrowup" size="xx-small"/>
+                                        </aura:if>
+                                    </div> 
+                                    <span class="slds-assistive-text" aria-live="assertive" aria-atomic="true">Sorted {!if(v.ascDescVal == 'asc', 'ascending', 'descending')}</span>
+                                </a>
+                            </th>
+                            <!-- style="font-size: 95%; width:7.00rem;" -->
+                            <th class="slds-is-sortable slds-is-resizable slds-text-title--caps" scope="col" style="font-size: 95%; width:7.00rem;">
+                                <a href="javascript:void(0);" class="slds-th__action slds-text-link--reset" tabindex="0">
+                                    <span class="slds-assistive-text">Sort </span>
+                                    <c:MyOutputField class="slds-truncate" value="Solution Set" recordid="Solution_Set__c" />
+                                    <div class="slds-icon_container">
+                                        <aura:if isTrue="{!and(v.sortField == 'Solution_Set__c', v.ascDescVal == 'desc')}">
+                                            <lightning:icon iconName="utility:arrowdown" size="xx-small"/>
+                                        </aura:if>
+                                        <aura:if isTrue="{!and(v.sortField == 'Solution_Set__c', v.ascDescVal == 'asc')}">
+                                            <lightning:icon iconName="utility:arrowup" size="xx-small"/>
+                                        </aura:if>
+                                    </div> 
+                                    <span class="slds-assistive-text" aria-live="assertive" aria-atomic="true">Sorted {!if(v.ascDescVal == 'asc', 'ascending', 'descending')}</span>
+                                </a>    
+                            </th>
+                            <!-- width:10.00rem; -->
+                            <th class="slds-is-sortable slds-is-resizable slds-text-title--caps" scope="col" style="font-size: 95%;">
+                                <a href="javascript:void(0);" class="slds-th__action slds-text-link--reset" tabindex="0">
+                                    <span class="slds-assistive-text">Sort </span> 
+                                    <c:MyOutputField class="slds-truncate" value="Effective End Date" recordid="Effective_End_Date__c" />
+                                    <div class="slds-icon_container">
+                                        <aura:if isTrue="{!and(v.sortField == 'Effective_End_Date__c', v.ascDescVal == 'desc')}">
+                                            <lightning:icon iconName="utility:arrowdown" size="xx-small"/>
+                                        </aura:if>
+                                        <aura:if isTrue="{!and(v.sortField == 'Effective_End_Date__c', v.ascDescVal == 'asc')}">
+                                            <lightning:icon iconName="utility:arrowup" size="xx-small"/>
+                                        </aura:if>
+                                    </div> 
+                                    <span class="slds-assistive-text" aria-live="assertive" aria-atomic="true">Sorted {!if(v.ascDescVal == 'asc', 'ascending', 'descending')}</span>
+                                </a>
                             </th>
                             <th class="slds-is-sortable slds-is-resizable slds-text-title--caps" scope="col" style="font-size: 95%;">
                                 <a href="javascript:void(0);" class="slds-th__action slds-text-link--reset" tabindex="0">
                                     <span class="slds-assistive-text">Sort </span>
-                                    <span class="slds-truncate" title="Parent Account Name">Parent Account Name</span>
+                                    <c:MyOutputField class="slds-truncate" value="Effective Start Date" recordid="Effective_Start_Date__c" />
                                     <div class="slds-icon_container">
-                                        <lightning:icon iconName="utility:arrowdown" size="xx-small" alternativeText="arrowdown" class="slds-icon slds-icon--xx-small slds-icon-text-default slds-is-sortable__icon"/>
-                                    </div>
-                                    <span class="slds-assistive-text" aria-live="assertive" aria-atomic="true"></span>
-                                </a>
-                                <div class="slds-resizable">
-                                    <label for="cell-resize-handle-556" class="slds-assistive-text">Parent Account Name column width</label>
-                                    <input type="range" min="20" max="1000" class="slds-resizable__input slds-assistive-text" id="cell-resize-handle-556" tabindex="0" />
-                                    <span class="slds-resizable__handle">
-                                        <span class="slds-resizable__divider"></span>
-                                    </span>
-                                </div>
+                                        <aura:if isTrue="{!and(v.sortField == 'Effective_Start_Date__c', v.ascDescVal == 'desc')}">
+                                            <lightning:icon iconName="utility:arrowdown" size="xx-small"/>
+                                        </aura:if>
+                                        <aura:if isTrue="{!and(v.sortField == 'Effective_Start_Date__c', v.ascDescVal == 'asc')}">
+                                            <lightning:icon iconName="utility:arrowup" size="xx-small"/>
+                                        </aura:if>
+                                    </div> 
+                                    <span class="slds-assistive-text" aria-live="assertive" aria-atomic="true">Sorted {!if(v.ascDescVal == 'asc', 'ascending', 'descending')}</span>
+                                </a> 
                             </th>
-                            <th class="slds-is-sortable slds-is-resizable slds-text-title--caps" scope="col" style="font-size: 95%;">
-                                <a href="javascript:void(0);" class="slds-th__action slds-text-link--reset" tabindex="0">
-                                    <span class="slds-assistive-text">Sort </span>
-                                    <span class="slds-truncate" title="Effective End Date">Effective End Date</span>
-                                    <div class="slds-icon_container">
-                                        <lightning:icon iconName="utility:arrowdown" size="xx-small" alternativeText="arrowdown" class="slds-icon slds-icon--xx-small slds-icon-text-default slds-is-sortable__icon"/>
-                                    </div>
-                                    <span class="slds-assistive-text" aria-live="assertive" aria-atomic="true"></span>
-                                </a>
-                                <div class="slds-resizable">
-                                    <label for="cell-resize-handle-557" class="slds-assistive-text">Effective End Date column width</label>
-                                    <input type="range" min="20" max="1000" class="slds-resizable__input slds-assistive-text" id="cell-resize-handle-557" tabindex="0" />
-                                    <span class="slds-resizable__handle">
-                                        <span class="slds-resizable__divider"></span>
-                                    </span>
-                                </div>
-                            </th>
-                            <th class="slds-is-sortable slds-is-resizable slds-text-title--caps" scope="col" style="font-size: 95%;">
-                                <a href="javascript:void(0);" class="slds-th__action slds-text-link--reset" tabindex="0">
-                                    <span class="slds-assistive-text">Sort </span>
-                                    <span class="slds-truncate" title="Effective End Date">Effective End Date</span>
-                                    <div class="slds-icon_container">
-                                        <lightning:icon iconName="utility:arrowdown" size="xx-small" alternativeText="arrowdown" class="slds-icon slds-icon--xx-small slds-icon-text-default slds-is-sortable__icon"/>
-                                    </div>
-                                    <span class="slds-assistive-text" aria-live="assertive" aria-atomic="true"></span>
-                                </a>
-                                <div class="slds-resizable">
-                                    <label for="cell-resize-handle-557" class="slds-assistive-text">Effective End Date column width</label>
-                                    <input type="range" min="20" max="1000" class="slds-resizable__input slds-assistive-text" id="cell-resize-handle-557" tabindex="0" />
-                                    <span class="slds-resizable__handle">
-                                        <span class="slds-resizable__divider"></span>
-                                    </span>
-                                </div>
-                            </th>
-                            <th class="slds-is-sortable slds-is-resizable slds-text-title--caps" scope="col" style="font-size: 95%;">
-                                <a href="javascript:void(0);" class="slds-th__action slds-text-link--reset" tabindex="0">
-                                    <span class="slds-assistive-text">Sort </span>
-                                    <span class="slds-truncate" title="Effective End Date">Effective End Date</span>
-                                    <div class="slds-icon_container">
-                                        <lightning:icon iconName="utility:arrowdown" size="xx-small" alternativeText="arrowdown" class="slds-icon slds-icon--xx-small slds-icon-text-default slds-is-sortable__icon"/>
-                                    </div>
-                                    <span class="slds-assistive-text" aria-live="assertive" aria-atomic="true"></span>
-                                </a>
-                                <div class="slds-resizable">
-                                    <label for="cell-resize-handle-557" class="slds-assistive-text">Effective End Date column width</label>
-                                    <input type="range" min="20" max="1000" class="slds-resizable__input slds-assistive-text" id="cell-resize-handle-557" tabindex="0" />
-                                    <span class="slds-resizable__handle">
-                                        <span class="slds-resizable__divider"></span>
-                                    </span>
-                                </div>
-                            </th>
-                            <th class="slds-is-sortable slds-is-resizable slds-text-title--caps" scope="col" style="font-size: 95%; width:5.00rem;">
-                                <a href="javascript:void(0);" class="slds-th__action slds-text-link--reset" tabindex="0">
-                                    <span class="slds-assistive-text">Sort </span>
-                                    <span class="slds-truncate" title="Order Id">Order Id</span>
-                                    <div class="slds-icon_container">
-                                        <lightning:icon iconName="utility:arrowdown" size="xx-small" alternativeText="arrowdown" class="slds-icon slds-icon--xx-small slds-icon-text-default slds-is-sortable__icon"/>
-                                    </div>
-                                    <span class="slds-assistive-text" aria-live="assertive" aria-atomic="true"></span>
-                                </a>
-                                <div class="slds-resizable">
-                                    <label for="cell-resize-handle-554" class="slds-assistive-text">Order Id column width</label>
-                                    <input type="range" min="20" max="1000" class="slds-resizable__input slds-assistive-text" id="cell-resize-handle-554" tabindex="0" />
-                                    <span class="slds-resizable__handle">
-                                        <span class="slds-resizable__divider"></span>
-                                    </span>
-                                </div>
-                            </th>
-                            <!--th scope="col" style="width:3.25rem;">
+                            <!-- <th scope="col" style="width:3.25rem;"> style="font-size: 95%;"-->
+                            <th class="slds-is-sortable slds-is-resizable slds-text-title--caps" scope="col" style="font-size: 95%; width:9.75rem;">
                                 <div class="slds-th__action">
-                                    <span class="slds-assistive-text">Actions</span>
+                                    <span class="slds-truncate" title="Contract Products">Contract Products</span>
+                                    <span class="slds-assistive-text">Contract Products</span>
                                 </div>
-                            </th-->
+                            </th>
                         </tr>
                     </thead>
                     <aura:iteration items="{!v.contracts}" var="contract">
@@ -243,10 +247,15 @@
                                     </span>
                                 </td>
                                 <th scope="row">
-                                    <div class="slds-truncate" title="{!contract.Original_Contract_Id__c}"><a href="javascript:void(0);" id="{!contract.Id}" onclick="{!c.gotoRecord}">{!contract.Original_Contract_Id__c}</a></div>
+                                    <div class="slds-truncate" title="{!contract.Original_Contract_Id__c}">
+                                        <a href="javascript:void(0);" id="{!contract.Id}" onclick="{!c.gotoRecord}">{!contract.Original_Contract_Id__c}</a>
+                                    </div>
                                 </th>
                                 <td role="gridcell">
-                                    <div class="slds-truncate" title="{!contract.Parent_Contract__r.Name}">{!contract.Parent_Contract__r.Name}</div>
+                                    <div class="slds-truncate" title="{!contract.Parent_Contract__r.Name}">
+                                        <a href="javascript:void(0);" id="{!contract.Parent_Contract__c}" onclick="{!c.gotoRecord}">{!contract.Parent_Contract__r.Name}</a>
+                                    </div>
+                                    <!-- <div class="slds-truncate" title="{!contract.Parent_Contract__r.Name}">{!contract.Parent_Contract__r.Name}</div> -->
                                 </td>
                                 <td role="gridcell">
                                     <div class="slds-truncate" title="{!contract.Order_Id__c}">{!contract.Order_Id__c}</div>
@@ -258,21 +267,36 @@
                                     <div class="slds-truncate" title="{!contract.Contract_Type__c}">{!contract.Contract_Type__c}</div>
                                 </td>
                                 <td role="gridcell">
-                                    <div class="slds-truncate" title="{!contract.Parent_Account_Name__r.Name}">{!contract.Parent_Account_Name__r.Name}</div>
+                                    <div class="slds-truncate" title="{!contract.Parent_Account_Name__r.Name}">
+                                        <a href="javascript:void(0);" id="{!contract.Parent_Account_Name__c}" onclick="{!c.gotoRecord}">{!contract.Parent_Account_Name__r.Name}</a>
+                                    </div>
+                                    <!-- <div class="slds-truncate" title="{!contract.Parent_Account_Name__r.Name}">{!contract.Parent_Account_Name__r.Name}</div> -->
+                                </td> 
+                                <td role="gridcell">
+                                    <div class="slds-truncate" title="{!contract.Solution_Set__c}">{!contract.Solution_Set__c}</div>
                                 </td>
                                 <td role="gridcell">
                                     <div class="slds-truncate" title="{!contract.Effective_End_Date__c}">{!contract.Effective_End_Date__c}</div>
+                                </td>
+                                <td role="gridcell">
+                                    <div class="slds-truncate" title="{!contract.Effective_Start_Date__c}">{!contract.Effective_Start_Date__c}</div>
+                                </td>
+                                 <td role="gridcell">
+                                 <!-- <a href="javascript:void(0);" class="slds-th__action slds-text-link- -reset" tabindex="0"> -->
+                                    <div class="slds-truncate" title="{!contract.Contract_Products__r.length}"> 
+                                        <button class="slds-button slds-button_neutral" name="{!contract.Id}" onclick="{!c.openModal}">View ({!contract.Contract_Products__r.length})</button>
+                                    </div>
+                                <!-- </a> -->
                                 </td>
                             </tr>
                         </tbody>
                     </aura:iteration>
                 </table>
+                <div aura:id="ModalDialogPlaceholder" />
+                <div class="c-container" style="padding:10px">
+                    <c:Pagination pagelimit="{!v.pagelimit}" page="{!v.page}" resultsetsize="{!v.resultsetsize}" />
+                </div> 
             </aura:if>
         </div>
     </aura:if>
-    
-    <!--div>
-        <b>selectedContracts:</b>
-        <p><ui:outputText class="selectedContracts" aura:id="basline-select-result12" value="" /></p>
-    </div-->
 </aura:component>
