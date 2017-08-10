@@ -31,6 +31,9 @@
                             <div class="slds-truncate" title="Order Id">Order Id</div>
                           </th>
                           <th scope="col">
+                            <div class="slds-truncate" title="Contract Type">Contract Type</div>
+                          </th>
+                          <th scope="col">
                             <div class="slds-truncate" title="Parent Account Name">Parent Account Name</div>
                           </th>
                           <th scope="col">
@@ -41,9 +44,14 @@
                     <aura:iteration items="{!v.contracts}" var="contract">
                         <tbody id="prodList-body">
                             <tr class="slds-hint-parent">
-                                <td role="gridcell">
+                                <!-- <td role="gridcell">
                                     <div class="slds-truncate" title="{!contract.Contract_Id_Text__c}">{!contract.Contract_Id_Text__c}</div>
-                                </td>
+                                </td> --> 
+                                <th scope="gridcell">
+                                    <div class="slds-truncate" title="{!contract.Contract_Id_Text__c}">
+                                          <a href="javascript:void(0);" onclick="{!c.gotoRecord}" id="{!contract.Contract__c}">{!contract.Contract_Id_Text__c}</a>
+                                    </div>
+                                </th>
                                 <td role="gridcell">
                                     <div class="slds-truncate" title="{!contract.Parent_Contract__c}">{!contract.Parent_Contract__c}</div>
                                 </td>
@@ -51,8 +59,16 @@
                                     <div class="slds-truncate" title="{!contract.Order_Id__c}">{!contract.Order_Id__c}</div>
                                 </td>
                                 <td role="gridcell">
-                                    <div class="slds-truncate" title="{!contract.Parent_Account_Name__c}">{!contract.Parent_Account_Name__r.Name}</div>
+                                    <div class="slds-truncate" title="{!contract.Contract_Type__c}">{!contract.Contract_Type__c}</div>
                                 </td>
+                                <!-- <td role="gridcell">
+                                    <div class="slds-truncate" title="{!contract.Parent_Account_Name__c}">{!contract.Parent_Account_Name__r.Name}</div>
+                                </td> -->
+                                 <th scope="gridcell">
+                                    <div class="slds-truncate" title="{!contract.Parent_Account_Name__r.Name}">
+                                          <a href="javascript:void(0);" onclick="{!c.gotoRecord}" id="{!contract.Parent_Account_Name__c}">{!contract.Parent_Account_Name__r.Name}</a>
+                                    </div>
+                                </th>
 								                <td role="gridcell">
                                     <div class="slds-truncate" title="{!contract.Contract_Effective_End_Date__c}">{!contract.Contract_Effective_End_Date__c}</div>
                                 </td>                                

@@ -19,14 +19,14 @@ global class SF1_ListContractsController {
         //@AuraEnabled public List<Cell> columnHeader {get; set;}
         
         public ResultSetCustom(List<sObject> rw, Integer siz) {
-        	this.rows = rw;
+            this.rows = rw;
             this.size = siz;
         }
     }
 
 
     @AuraEnabled
-	public static ResultSetCustom getActiveContractsByAccIdPagination_bckup(Account acc, Integer lim, Integer currentPage, String sortField, String sortOrder) {
+    public static ResultSetCustom getActiveContractsByAccIdPagination_bckup(Account acc, Integer lim, Integer currentPage, String sortField, String sortOrder) {
 
         //get total rows
         String countQuery = 'Select count()'+' FROM ';
@@ -34,11 +34,11 @@ global class SF1_ListContractsController {
         countQuery += ' AND Active__c = true AND Effective_End_Date__c >= LAST_N_MONTHS:2 AND Contract_Product_Count__c > 0';
         System.debug(Logginglevel.info, 'countQuery ===== '+countQuery);
         Integer totalRows = Database.countQuery(countQuery+ ' LIMIT 50000');
-        //get records	
-        	
-        sortField = String.isNotBlank(sortField) ? sortField : 'Effective_End_Date__c';	
-        sortOrder = String.isNotBlank(sortOrder) ? sortOrder : 'ASC';	        
-       	String query = 'SELECT Id, name, Contract_Type__c, Parent_Contract__c, Parent_Contract__r.Name, Order_Id__c, Parent_Account_Name__c, ';
+        //get records   
+            
+        sortField = String.isNotBlank(sortField) ? sortField : 'Effective_End_Date__c'; 
+        sortOrder = String.isNotBlank(sortOrder) ? sortOrder : 'ASC';           
+        String query = 'SELECT Id, name, Contract_Type__c, Parent_Contract__c, Parent_Contract__r.Name, Order_Id__c, Parent_Account_Name__c, ';
         query += 'Currency__c, Solution_Set__c,Effective_Start_Date__c, CurrencyIsoCode, Account_Name__c, Account_Name__r.Id, '; 
         query += 'Account_Name__r.Name , Active__c,Effective_End_Date__c , Original_Contract_Id__c, Opportunity_Name__r.currencyIsoCode, ';
         query += 'Opportunity_Name__r.Deal_Type__c, Opportunity_Name__r.Partner_Involved__c, Contract_Product_Count__c, (SELECT Id, ';
@@ -48,10 +48,10 @@ global class SF1_ListContractsController {
         query += ' order by '+sortField+' '+sortOrder+' LIMIT '+lim +' Offset '+ currentPage;
         System.debug(Logginglevel.info, 'Full Query ===== '+query);
     
-    	//return (List<Merge_Contract_Header__c>) Database.query(query);
+        //return (List<Merge_Contract_Header__c>) Database.query(query);
         
-		return new ResultSetCustom(Database.query(query), totalRows);
-	}
+        return new ResultSetCustom(Database.query(query), totalRows);
+    }
     
 
     @AuraEnabled
@@ -68,7 +68,7 @@ global class SF1_ListContractsController {
     }
     
         @AuraEnabled
-	public static ResultSetCustom getActiveContractsByAccIdPagination(Account acc, Integer lim, Integer currentPage, String sortField, String sortOrder) {
+    public static ResultSetCustom getActiveContractsByAccIdPagination(Account acc, Integer lim, Integer currentPage, String sortField, String sortOrder) {
 
         //get total rows
         String countQuery = 'Select count()'+' FROM ';
@@ -76,11 +76,11 @@ global class SF1_ListContractsController {
         countQuery += ' AND Active__c = true AND Effective_End_Date__c >= LAST_N_MONTHS:2 AND Contract_Product_Count__c > 0';
         System.debug(Logginglevel.info, 'countQuery ===== '+countQuery);
         Integer totalRows = Database.countQuery(countQuery+ ' LIMIT 50000');
-        //get records	
-        	
-        sortField = String.isNotBlank(sortField) ? sortField : 'Effective_End_Date__c';	
-        sortOrder = String.isNotBlank(sortOrder) ? sortOrder : 'ASC';	        
-       	String query = 'SELECT Id, name, Contract_Type__c, Parent_Contract__c, Parent_Contract__r.Name, Order_Id__c, Parent_Account_Name__c, ';
+        //get records   
+            
+        sortField = String.isNotBlank(sortField) ? sortField : 'Effective_End_Date__c'; 
+        sortOrder = String.isNotBlank(sortOrder) ? sortOrder : 'ASC';           
+        String query = 'SELECT Id, name, Contract_Type__c, Parent_Contract__c, Parent_Contract__r.Name, Order_Id__c, Parent_Account_Name__c, ';
         query += 'Currency__c, Solution_Set__c,Effective_Start_Date__c, CurrencyIsoCode, Account_Name__c, Account_Name__r.Id, '; 
         query += 'Account_Name__r.Name , Active__c,Effective_End_Date__c , Original_Contract_Id__c, Opportunity_Name__r.currencyIsoCode, ';
         query += 'Opportunity_Name__r.Deal_Type__c, Opportunity_Name__r.Partner_Involved__c, Contract_Product_Count__c, (SELECT Id, ';
@@ -90,14 +90,14 @@ global class SF1_ListContractsController {
         query += ' order by '+sortField+' '+sortOrder+' LIMIT '+lim +' Offset '+ currentPage;
         System.debug(Logginglevel.info, 'Full Query ===== '+query);
     
-    	Map<String, Product2> productAkamIdMap = new Map<String, Product2>();
+        Map<String, Product2> productAkamIdMap = new Map<String, Product2>();
         for (product2 pr : [Select Id, Name, Akam_Product_Id__c from Product2 limit 50000]) {
             productAkamIdMap.put(pr.Akam_Product_Id__c, pr);
         }
         
         System.debug('productAkamIdMap.size=' + productAkamIdMap.size());
     
-    	//return (List<Merge_Contract_Header__c>) Database.query(query);
+        //return (List<Merge_Contract_Header__c>) Database.query(query);
         List<Merge_Contract_Header__c> mchList = new List<Merge_Contract_Header__c>();
         Set<String> akamProdId = new Set<String>();
         for (Merge_Contract_Header__c mch : Database.query(query)) {
@@ -120,7 +120,7 @@ global class SF1_ListContractsController {
 
         }
          
-		//return new ResultSetCustom(Database.query(query), totalRows);
+        //return new ResultSetCustom(Database.query(query), totalRows);
         return new ResultSetCustom(mchList, totalRows);
-	}
+    }
 }
