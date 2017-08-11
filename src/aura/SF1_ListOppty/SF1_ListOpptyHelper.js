@@ -94,6 +94,7 @@
         console.log(JSON.stringify(params));
         action.setParams(params);
         action.setCallback(this, function(response) {
+            var state = response.getState();
             console.log(response.getState());
             if (response && response.getState() === "SUCCESS" && component.isValid()) {
 
@@ -181,6 +182,7 @@
         console.log(JSON.stringify(params));
         action.setParams(params);
         action.setCallback(this, function(response) {
+            var state = response.getState();
             console.log(response.getState());
             if (response && response.getState() === "SUCCESS" && component.isValid()) {
                 
@@ -213,9 +215,9 @@
 
     validateState : function ( component,  opptys, opptySize) {
 
-        console.log('validateState:Opptys=' + opptys);
-        console.log('validateState:opptylength=' + opptys.length);
-        console.log('validateState:opptySize=' + opptySize);
+        // console.log('validateState:Opptys=' + opptys);
+        // console.log('validateState:opptylength=' + opptys.length);
+        // console.log('validateState:opptySize=' + opptySize);
 
         if((this.isEmpty(opptys)) || (!opptySize>0)) {
             
@@ -230,9 +232,8 @@
             
             if (contractIds!=null && contractIds.length > 0) {
                 
-                var contractIdsVar = event.getParam("contracts");
-                
-                console.log('contractIds not empty but no Opptys found for:' + contractIds + '; contractIdsVar=' + contractIdsVar);
+                // var contractIdsVar = event.getParam("contracts");
+                // console.log('contractIds not empty but no Opptys found for:' + contractIds + '; contractIdsVar=' + contractIdsVar);
 
                 var EditOppTab = component.find("noBaselineOpptysMessage"); 
                 $A.util.removeClass(EditOppTab, 'slds-hide');

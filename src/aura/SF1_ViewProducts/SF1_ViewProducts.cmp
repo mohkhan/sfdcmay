@@ -44,12 +44,12 @@
                                 </td>
                                  <td role="gridcell">
                                     <div class="slds-truncate" title="{!prod.Average_Renewal_Commit_MRR__c}">
-                                        <ui:outputNumber value="{!prod.Average_Renewal_Commit_MRR__c}" format=".0"/>        
+                                        <ui:outputNumber value="{!prod.Average_Renewal_Commit_MRR__c}" format="0.00"/>        
                                     </div>
                                 </td>
                                 <td role="gridcell">
                                     <div class="slds-truncate" title="{!prod.Average_Renewal_Usage_MRR__c}">
-                                        <ui:outputNumber value="{!prod.Average_Renewal_Usage_MRR__c}" format=".0"/>        
+                                        <ui:outputNumber value="{!prod.Average_Renewal_Usage_MRR__c}" format="0.00"/>        
                                     </div>
                                 </td>
                             </tr>
