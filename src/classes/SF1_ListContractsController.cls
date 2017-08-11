@@ -1,5 +1,18 @@
 global class SF1_ListContractsController{
 
+    @AuraEnabled
+    public static List<Merge_Contract_Header__c> getActiveContractsWithProductsByAccId(Account acc) {
+
+        return [SELECT Id, name, Contract_Type__c, Parent_Contract__c, Parent_Contract__r.Name, Order_Id__c, Parent_Account_Name__c, Currency__c, 
+            Solution_Set__c,Effective_Start_Date__c, CurrencyIsoCode, Account_Name__c, Account_Name__r.Id, Account_Name__r.Name , Active__c,
+            Effective_End_Date__c , Original_Contract_Id__c, Opportunity_Name__r.currencyIsoCode, Opportunity_Name__r.Deal_Type__c,
+            Opportunity_Name__r.Partner_Involved__c, Contract_Product_Count__c, (SELECT Id, CurrencyIsoCode, Average_Renewal_Commit_MRR__c,
+            Average_Renewal_Usage_MRR__c, Forecast_Product_Id__c FROM Contract_Products__r) FROM Merge_Contract_Header__c 
+            WHERE Account_Name__c =: acc.Id AND Active__c = true AND Effective_End_Date__c >= LAST_N_MONTHS:2 
+            AND Contract_Product_Count__c > 0 ORDER BY Effective_End_Date__c ASC];
+
+    }
+
     public class ResultSetCustom {
         @AuraEnabled public List<sObject> rows {get; set;}
         @AuraEnabled public Integer size {get; set;}
